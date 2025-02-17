@@ -1,18 +1,18 @@
 package com.dictionary.ui.impl;
 
-import com.dictionary.service.api.Dictionary;
+import com.dictionary.service.DictionaryService;
 import com.dictionary.ui.api.Ui;
 
 import java.io.Console;
 import java.util.Scanner;
 
 public class ConsoleUi implements Ui {
-    private final Dictionary dictionary; // TODO не совсем правильно
+    private final DictionaryService dictionaryService; // TODO не совсем правильно
     private final Scanner scanner = new Scanner(System.in);
     private final Console console = System.console();
 
-    public ConsoleUi(Dictionary dictionary) {
-        this.dictionary = dictionary;
+    public ConsoleUi(DictionaryService dictionaryService) {
+        this.dictionaryService = dictionaryService;
     }
 
     @Override
