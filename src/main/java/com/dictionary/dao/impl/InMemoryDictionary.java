@@ -1,7 +1,7 @@
-package com.dictionary.service.impl;
+package com.dictionary.dao.impl;
 
 import com.dictionary.dto.CreateWord;
-import com.dictionary.service.api.Dictionary;
+import com.dictionary.dao.api.Dictionary;
 import com.dictionary.dto.GetWord;
 import com.dictionary.model.Word;
 
@@ -46,20 +46,6 @@ public class InMemoryDictionary implements Dictionary {
 		if (isWordExist(word)) {
 			dictionary.remove(getWordByIndex(getIndexByWord(word)));
 		}
-	}
-
-	@Override
-	public Set<Word> getAllWordsByKeyList(final List<String> keyList){
-		Set<Word> result = new HashSet<>();
-
-		for (Word word : dictionary) {
-			String key = word.getKey();
-			if(keyList.contains(key)) {
-				result.add(new Word(key, word.getValues()));
-			}
-		}
-
-		return result;
 	}
 
 	private void add(CreateWord word){
