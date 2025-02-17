@@ -1,4 +1,4 @@
-package com.dictionary.service.model;
+package com.dictionary.model;
 
 import java.util.List;
 

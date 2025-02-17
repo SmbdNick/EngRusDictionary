@@ -1,4 +1,4 @@
-package com.dictionary.service.dto;
+package com.dictionary.dto;
 import java.util.*;
 
 public class CreateWord {

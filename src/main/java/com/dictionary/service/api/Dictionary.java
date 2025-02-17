@@ -1,8 +1,8 @@
 package com.dictionary.service.api;
 
-import com.dictionary.service.dto.CreateWord;
-import com.dictionary.service.dto.GetWord;
-import com.dictionary.service.model.Word;
+import com.dictionary.dto.CreateWord;
+import com.dictionary.dto.GetWord;
+import com.dictionary.model.Word;
 
 import java.util.*;
 
