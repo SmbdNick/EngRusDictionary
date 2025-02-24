@@ -10,6 +10,7 @@ public interface Ui {
     void showDictionaryEditMenu();
     void showWord(String key);
     void showWordList(List<String> keyList);
-    void addWord();
+    void showAllWords();
+    void addWord(String entry);
     void deleteWord();
 }

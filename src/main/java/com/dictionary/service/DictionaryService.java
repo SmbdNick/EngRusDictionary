@@ -55,4 +55,14 @@ public class DictionaryService {
 
         return result;
     }
+
+    public Set<Word> getAllWords(){
+        Set<Word> result = new HashSet<>();
+
+        for (Word word : dictionary.getAllWords()){
+            String key = word.getKey();
+            result.add(new Word(key, word.getValues()));
+        }
+        return result;
+    }
 }

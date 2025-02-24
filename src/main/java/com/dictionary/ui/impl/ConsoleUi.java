@@ -77,6 +77,7 @@ public class ConsoleUi implements Ui {
                 "2. Show all entries\n" +
                 "3. Add entry to dictionary\n" +
                 "4. Remove entry from dictionary");
+        doCommand((askCommand("->")));
     }
 
     @Override
@@ -92,8 +93,20 @@ public class ConsoleUi implements Ui {
     }
 
     @Override
-    public void addWord() {
+    public void showAllWords() {
+        List<Word> wordList = new ArrayList<>(dictionaryMap.get(currentDictionaryKey).getAllWords());
+        say(wordList.toString());
+    }
 
+    @Override
+    public void addWord(String entry) {
+        String key;
+        String[] keyPlusValue = entry.split("-");
+        key = keyPlusValue[0];
+        say(key);
+
+        List<String> values = List.of(keyPlusValue[1].split("/"));
+        dictionaryMap.get(currentDictionaryKey).createWord(key,values);
     }
 
     @Override
@@ -105,7 +118,7 @@ public class ConsoleUi implements Ui {
         System.out.println(message);
     }
 
-    private Integer askCommand(String outputMessage) {
+    private String askCommand(String outputMessage) {
         say(outputMessage);
         String command = null;
         try {
@@ -117,12 +130,13 @@ public class ConsoleUi implements Ui {
             }
         } catch (Exception e) {
         }
-        return Integer.parseInt(command);
+        return command;
     }
 
-    private void doCommand(Integer command){
+    private void doCommand(String command){
+        Integer intCommand = Integer.parseInt(command);
         if(uIstate == UIState.MAIN_MENU){
-            switch (command){
+            switch (intCommand){
                 case 1: showCreationMenu();
                     break;
 
@@ -136,7 +150,7 @@ public class ConsoleUi implements Ui {
         }
 
         if (uIstate == UIState.CREATION_MENU){
-            switch (command){
+            switch (intCommand){
                 case 1:
                     DictionaryService rusEngDictionary = new DictionaryService(new InMemoryDictionary(), new RusValidator(), new EngValidator());
                     if (!(dictionaryMap.containsKey("Rus-Eng"))){
@@ -176,17 +190,38 @@ public class ConsoleUi implements Ui {
                 say("Your dictionary map is empty, backing to main menu");
                 showMainMenu();
             } else {
-                    if (command-1 == list.size())
+                    if (intCommand-1 == list.size())
                         showMainMenu();
-                    if (command >= list.size()){
+                    if (intCommand-1 > list.size()){
                         say("Unknown command, please reenter your command");
                         showDictionaryMenu();
                     }
 
-                    else {currentDictionaryKey = list.get(command-1);
+                    else {currentDictionaryKey = list.get(intCommand-1);
 
                 showDictionaryEditMenu();
                     }
+            }
+        }
+
+        if (uIstate == UIState.DICTIONARY_EDIT_MENU){
+            switch (intCommand){
+                case 1:
+                    say("Enter a key to search to");
+                    showWord(askCommand("->"));
+                    showDictionaryEditMenu();
+                    break;
+
+                case 2:
+                    showAllWords();
+                    showDictionaryEditMenu();
+                    break;
+
+                case 3:
+                    say("Enter your dictionary entry using format: key-value1/value2/...");
+                    addWord(askCommand("->"));
+                    showDictionaryEditMenu();
+                    break;
             }
         }
     }
