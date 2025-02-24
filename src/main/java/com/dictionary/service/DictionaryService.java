@@ -2,27 +2,36 @@ package com.dictionary.service;
 
 import com.dictionary.dao.api.Dictionary;
 import com.dictionary.dto.CreateWord;
+import com.dictionary.dto.GetWord;
 import com.dictionary.model.Word;
 import com.dictionary.service.validator.api.Validator;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class DictionaryService {
     private final Dictionary dictionary;
-    private final Validator validator;
+    private final Validator keyValidator;
+    private final Validator valueValidator;
+
 
     private static final String SUCCESS_CREATE = "%s created successfully";
 
-    public DictionaryService(Dictionary dictionary, Validator validator) {
+    public DictionaryService(Dictionary dictionary, Validator keyValidator, Validator valueValidator) {
         this.dictionary = dictionary;
-        this.validator = validator;
+        this.keyValidator = keyValidator;
+        this.valueValidator = valueValidator;
     }
 
     // TODO только пример, возможно надо переделать и добавить такие же для всех методов словаря (может и больше)
     public String createWord(String key, List<String> values) {
-        validator.validate(key);
+        keyValidator.validate(key);
+
+        for (String s : values){
+            valueValidator.validate(s);
+        }
 
         CreateWord newWord = new CreateWord(key, values);
         dictionary.modify(newWord);
@@ -30,12 +39,16 @@ public class DictionaryService {
         return String.format(SUCCESS_CREATE, "word");
     }
 
-    public Set<Word> getAllWordsByKeyList(final List<String> keyList){
+    public Optional<GetWord> getWordByKey(String key){
+
+        return dictionary.get(key);
+    }
+    public Set<Word> getAllWordsByKeyList(final List<String> keyList) {
         Set<Word> result = new HashSet<>();
 
         for (Word word : dictionary.getAllWords()) {
             String key = word.getKey();
-            if(keyList.contains(key)) {
+            if (keyList.contains(key)) {
                 result.add(new Word(key, word.getValues()));
             }
         }

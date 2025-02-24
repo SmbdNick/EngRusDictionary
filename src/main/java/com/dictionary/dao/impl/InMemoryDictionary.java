@@ -8,11 +8,11 @@ import com.dictionary.model.Word;
 import java.util.*;
 
 public class InMemoryDictionary implements Dictionary {
-	private final Set<Word> dictionary;
+	private final Set<Word> dictionary = new HashSet<>();
 
-	public InMemoryDictionary(Set<Word> dictionary) {
-		this.dictionary = dictionary;
-	}
+//	public InMemoryDictionary(Set<Word> dictionary) {
+//		this.dictionary = dictionary;
+//	}
 
 	@Override
 	public void modify(final CreateWord editWord) {
