@@ -8,65 +8,62 @@ import com.dictionary.model.Word;
 import java.util.*;
 
 public class InMemoryDictionary implements Dictionary {
-	private final Set<Word> dictionary = new HashSet<>();
+    private final Set<Word> dictionary = new HashSet<>();
 
-//	public InMemoryDictionary(Set<Word> dictionary) {
-//		this.dictionary = dictionary;
-//	}
 
-	@Override
-	public void modify(final CreateWord editWord) {
+    @Override
+    public void modify(final CreateWord editWord) {
         List<String> values = new ArrayList<>(editWord.getValues());
 
-		get(editWord.getKey()).
-				ifPresent(word -> values.addAll(word.getValues()));
+        get(editWord.getKey()).
+                ifPresent(word -> values.addAll(word.getValues()));
 
-		delete(editWord.getKey());
-		add(new CreateWord(editWord.getKey(), values));
-	}
+        delete(editWord.getKey());
+        add(new CreateWord(editWord.getKey(), values));
+    }
 
-	@Override
-	public Optional<GetWord> get(final String key) {
-		for (Word word : dictionary) {
-			if (word.getKey().equals(key)) {
-				return Optional.of(new GetWord(word.getValues()));
-			}
-		}
+    @Override
+    public Optional<GetWord> get(final String key) {
+        for (Word word : dictionary) {
+            if (word.getKey().equals(key)) {
+                return Optional.of(new GetWord(word.getValues()));
+            }
+        }
 
-		return Optional.empty();
-	}
+        return Optional.empty();
+    }
 
-	@Override
-	public Set<Word> getAllWords() {
-		return dictionary;
-	}
+    @Override
+    public Set<Word> getAllWords() {
+        return dictionary;
+    }
 
-	@Override
-	public void delete(final String word){
-		if (isWordExist(word)) {
-			dictionary.remove(getWordByIndex(getIndexByWord(word)));
-		}
-	}
+    @Override
+    public void delete(final String word) {
+        if (isWordExist(word)) {
+            dictionary.remove(getWordByIndex(getIndexByWord(word)));
+        }
+    }
 
-	private void add(CreateWord word){
-		dictionary.add(new Word(word.getKey(), word.getValues()));
-	}
+    private void add(CreateWord word) {
+        dictionary.add(new Word(word.getKey(), word.getValues()));
+    }
 
-	private boolean isWordExist(String word) {
+    private boolean isWordExist(String word) {
         return !dictionary.isEmpty() && getIndexByWord(word) != -1;
     }
 
-	private Word getWordByIndex(int index) {
-		return dictionary.toArray(new Word[0])[index];
-	}
+    private Word getWordByIndex(int index) {
+        return dictionary.toArray(new Word[0])[index];
+    }
 
-	private int getIndexByWord(String word) {
-		for (int i = 0; i < dictionary.size(); i++) {
-			if (dictionary.toArray(new Word[0])[i].getKey().equals(word)) {
-				return i;
-			}
-		}
+    private int getIndexByWord(String word) {
+        for (int i = 0; i < dictionary.size(); i++) {
+            if (dictionary.toArray(new Word[0])[i].getKey().equals(word)) {
+                return i;
+            }
+        }
 
-		return -1;
-	}
+        return -1;
+    }
 }

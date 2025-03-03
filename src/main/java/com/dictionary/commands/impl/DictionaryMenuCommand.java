@@ -35,23 +35,23 @@ public class DictionaryMenuCommand implements Command {
         if (list == null || list.isEmpty()) {
             say("Your dictionary map is empty, backing to main menu");
             uiState = UIState.MAIN_MENU;
-            setuIstate(uiState);
+            setUIState(uiState);
         } else {
             if (intCommand - 1 == list.size()) {
                 uiState = UIState.MAIN_MENU;
-                setuIstate(uiState);
+                setUIState(uiState);
             }
 
             if (intCommand - 1 > list.size()) {
                 say("Unknown command, please reenter your command");
                 uiState = UIState.DICTIONARY_MENU;
-                setuIstate(uiState);
+                setUIState(uiState);
             } else {
                 currentDictionaryKey = list.get(intCommand - 1);
                 setCurrentDictionaryKey(currentDictionaryKey);
 
                 uiState = UIState.DICTIONARY_EDIT_MENU;
-                setuIstate(uiState);
+                setUIState(uiState);
 
             }
         }

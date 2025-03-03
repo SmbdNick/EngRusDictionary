@@ -1,16 +1,14 @@
 package com.dictionary.commands.impl;
 
 import com.dictionary.commands.api.Command;
-import com.dictionary.service.DictionaryService;
 import com.dictionary.ui.api.UIState;
 
 import java.io.Console;
-import java.util.Map;
 import java.util.Scanner;
 
 import static com.dictionary.commands.Ask.ask;
 import static com.dictionary.commands.Say.say;
-import static com.dictionary.ui.impl.ConsoleUi.setuIstate;
+import static com.dictionary.ui.impl.ConsoleUi.setUIState;
 
 public class MainMenuCommand implements Command {
     @Override
@@ -27,17 +25,17 @@ public class MainMenuCommand implements Command {
         switch (ask(console, scanner)) {
             case "1":
                 uiState = UIState.CREATION_MENU;
-                setuIstate(uiState);
+                setUIState(uiState);
                 break;
 
             case "2":
                 uiState = UIState.DICTIONARY_MENU;
-                setuIstate(uiState);
+                setUIState(uiState);
                 break;
 
             default:
                 say("Unknown command, please reenter your command");
-                setuIstate(uiState);
+                setUIState(uiState);
                 break;
 
         }

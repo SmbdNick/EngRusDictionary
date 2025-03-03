@@ -65,4 +65,7 @@ public class DictionaryService {
         }
         return result;
     }
+    public void deleteEntryByKey(String key){
+        dictionary.delete(key);
+    }
 }

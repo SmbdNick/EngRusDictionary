@@ -6,7 +6,6 @@ import com.dictionary.service.DictionaryService;
 import com.dictionary.service.validator.impl.EngValidator;
 import com.dictionary.service.validator.impl.RusValidator;
 import com.dictionary.ui.api.UIState;
-import com.dictionary.ui.impl.ConsoleUi;
 
 import java.io.Console;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class CreationMenuCommand implements Command {
                 } else {
                     say("This dictionary already exists, please choose different option");
                 }
-                setuIstate(uiState);
+                setUIState(uiState);
                 break;
 
 
@@ -49,17 +48,17 @@ public class CreationMenuCommand implements Command {
                 } else {
                     say("This dictionary already exists, please choose different option");
                 }
-                setuIstate(uiState);
+                setUIState(uiState);
                 break;
 
             case "3":
                 uiState = UIState.MAIN_MENU;
-                setuIstate(uiState);
+                setUIState(uiState);
                 break;
 
             default:
                 say("Unknown command, please reenter your command");
-                setuIstate(uiState);
+                setUIState(uiState);
                 break;
         }
 
