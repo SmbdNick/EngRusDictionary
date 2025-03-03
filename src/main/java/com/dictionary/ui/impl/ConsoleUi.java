@@ -1,30 +1,63 @@
 package com.dictionary.ui.impl;
 
 import com.dictionary.dao.impl.InMemoryDictionary;
+import com.dictionary.dto.GetWord;
 import com.dictionary.model.Word;
 import com.dictionary.service.DictionaryService;
-import com.dictionary.service.exception.ValidationException;
 import com.dictionary.service.validator.impl.EngValidator;
 import com.dictionary.service.validator.impl.RusValidator;
-import com.dictionary.service.validator.impl.JapValidator;
+import com.dictionary.ui.api.UIState;
 import com.dictionary.ui.api.Ui;
 
 import java.io.Console;
 import java.util.*;
 
+import static com.dictionary.commands.Ask.ask;
+import static com.dictionary.commands.Say.say;
+
 public class ConsoleUi implements Ui {
-    enum UIState{
-        MAIN_MENU,
-        CREATION_MENU,
-        DICTIONARY_MENU,
-        DICTIONARY_EDIT_MENU
+
+    private static Map<String, DictionaryService> dictionaryMap = new HashMap();
+
+    public static Map<String, DictionaryService> getDictionaryMap() {
+        return dictionaryMap;
     }
-    private Map<String,DictionaryService> dictionaryMap = new HashMap();
-    private UIState uIstate;
-    private Integer currentDictionaryID;
-    private String currentDictionaryKey;
-//    private final DictionaryService dictionaryService; // TODO не совсем правильно
+
+    public static void setDictionaryMap(Map<String, DictionaryService> dictionaryMap) {
+        ConsoleUi.dictionaryMap = dictionaryMap;
+    }
+
+
+
+    private static UIState uIstate = UIState.MAIN_MENU;
+
+    public static UIState getuIstate() {
+        return uIstate;
+    }
+
+    public static void setuIstate(UIState uIstate) {
+        ConsoleUi.uIstate = uIstate;
+    }
+    private static String currentDictionaryKey;
+
+    public static String getCurrentDictionaryKey() {
+        return currentDictionaryKey;
+    }
+
+    public static void setCurrentDictionaryKey(String currentDictionaryKey) {
+        ConsoleUi.currentDictionaryKey = currentDictionaryKey;
+    }
+
     private final Scanner scanner = new Scanner(System.in);
+
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public Console getConsole() {
+        return console;
+    }
+
     private final Console console = System.console();
 
 //    public ConsoleUi(DictionaryService dictionaryService) {
@@ -39,7 +72,7 @@ public class ConsoleUi implements Ui {
                 "1. Create Dictionary\n" +
                 "2. Existing Dictionary Menu\n");
 
-        doCommand((askCommand("->")));
+        doCommand((ask(console, scanner)));
     }
 
     @Override
@@ -50,7 +83,7 @@ public class ConsoleUi implements Ui {
                 "2. Russian - Japanese\n" +
                 "3.Back to Main Menu");
 
-        doCommand((askCommand("->")));
+        doCommand((ask(console, scanner)));
     }
 
     @Override
@@ -59,13 +92,13 @@ public class ConsoleUi implements Ui {
         int i = 1;
 
         say("Your created dictionaries:");
-        for (String key : dictionaryMap.keySet()){
+        for (String key : dictionaryMap.keySet()) {
             say(i + key + " Dictionary");
             i++;
         }
         say(i + " Go back");
         say("Select a dictionary to work with");
-        doCommand((askCommand("->")));
+        doCommand((ask(console, scanner)));
     }
 
     @Override
@@ -77,18 +110,23 @@ public class ConsoleUi implements Ui {
                 "2. Show all entries\n" +
                 "3. Add entry to dictionary\n" +
                 "4. Remove entry from dictionary");
-        doCommand((askCommand("->")));
+        doCommand((ask(console, scanner)));
     }
 
     @Override
     public void showWord(String key) {
-        say(key + " " + dictionaryMap.get(currentDictionaryKey).getWordByKey(key));
+        Optional<GetWord> word = dictionaryMap.get(currentDictionaryKey)
+                .getWordByKey(key);
+        word.ifPresent(w -> say(key + " "+ w.toString()));
+        if (word.isEmpty()) {
+            say("Word not found");
+        }
     }
 
     @Override
     public void showWordList(List<String> keyList) {
-         List<Word> wordList = new ArrayList<>(dictionaryMap.get(currentDictionaryKey).getAllWordsByKeyList(keyList));
-         say(wordList.toString());
+        List<Word> wordList = new ArrayList<>(dictionaryMap.get(currentDictionaryKey).getAllWordsByKeyList(keyList));
+        say(wordList.toString());
 
     }
 
@@ -106,7 +144,7 @@ public class ConsoleUi implements Ui {
         say(key);
 
         List<String> values = List.of(keyPlusValue[1].split("/"));
-        dictionaryMap.get(currentDictionaryKey).createWord(key,values);
+        dictionaryMap.get(currentDictionaryKey).createWord(key, values);
     }
 
     @Override
@@ -114,58 +152,44 @@ public class ConsoleUi implements Ui {
 
     }
 
-    private void say(String message) {
-        System.out.println(message);
-    }
-
-    private String askCommand(String outputMessage) {
-        say(outputMessage);
-        String command = null;
-        try {
-            if (console == null) {
-                command = scanner.nextLine();
-            } else {
-                command = console.readLine();
-                
-            }
-        } catch (Exception e) {
-        }
-        return command;
-    }
-
-    private void doCommand(String command){
+//    Реализовано в MainMenuCommand
+    private void doCommand(String command) {
         Integer intCommand = Integer.parseInt(command);
-        if(uIstate == UIState.MAIN_MENU){
-            switch (intCommand){
-                case 1: showCreationMenu();
+        if (uIstate == UIState.MAIN_MENU) {
+            switch (intCommand) {
+                case 1:
+                    showCreationMenu();
                     break;
 
-                case 2: showDictionaryMenu();
+                case 2:
+                    showDictionaryMenu();
                     break;
 
-                default: say("Unknown command, please reenter your command");
+                default:
+                    say("Unknown command, please reenter your command");
                     showMainMenu();
                     break;
             }
         }
 
-        if (uIstate == UIState.CREATION_MENU){
-            switch (intCommand){
+        if (uIstate == UIState.CREATION_MENU) {
+            switch (intCommand) {
                 case 1:
                     DictionaryService rusEngDictionary = new DictionaryService(new InMemoryDictionary(), new RusValidator(), new EngValidator());
-                    if (!(dictionaryMap.containsKey("Rus-Eng"))){
+                    if (!(dictionaryMap.containsKey("Rus-Eng"))) {
                         dictionaryMap.put("Rus-Eng", rusEngDictionary);
                         showCreationMenu();
                     } else {
                         say("This dictionary already exists, please choose different option");
-                        showCreationMenu();}
+                        showCreationMenu();
+                    }
 
                     break;
                 case 2:
-                    DictionaryService rusJapDictionary = new DictionaryService(new InMemoryDictionary(), new RusValidator(), new JapValidator());
+                    DictionaryService rusJapDictionary = new DictionaryService(new InMemoryDictionary(), new EngValidator(), new RusValidator());
 
-                    if (!(dictionaryMap.containsKey("Rus-Jap"))){
-                        dictionaryMap.put("Rus-Jap",rusJapDictionary);
+                    if (!(dictionaryMap.containsKey("Eng-Rus"))) {
+                        dictionaryMap.put("Eng-Rus", rusJapDictionary);
                         showCreationMenu();
                     } else {
                         say("This dictionary already exists, please choose different option");
@@ -174,9 +198,11 @@ public class ConsoleUi implements Ui {
 
                     break;
 
-                case 3: showMainMenu();
+                case 3:
+                    showMainMenu();
 
-                default: say("Unknown command, please reenter your command");
+                default:
+                    say("Unknown command, please reenter your command");
                     showCreationMenu();
                     break;
             }
@@ -190,25 +216,24 @@ public class ConsoleUi implements Ui {
                 say("Your dictionary map is empty, backing to main menu");
                 showMainMenu();
             } else {
-                    if (intCommand-1 == list.size())
-                        showMainMenu();
-                    if (intCommand-1 > list.size()){
-                        say("Unknown command, please reenter your command");
-                        showDictionaryMenu();
-                    }
+                if (intCommand - 1 == list.size())
+                    showMainMenu();
+                if (intCommand - 1 > list.size()) {
+                    say("Unknown command, please reenter your command");
+                    showDictionaryMenu();
+                } else {
+                    currentDictionaryKey = list.get(intCommand - 1);
 
-                    else {currentDictionaryKey = list.get(intCommand-1);
-
-                showDictionaryEditMenu();
-                    }
+                    showDictionaryEditMenu();
+                }
             }
         }
 
-        if (uIstate == UIState.DICTIONARY_EDIT_MENU){
-            switch (intCommand){
+        if (uIstate == UIState.DICTIONARY_EDIT_MENU) {
+            switch (intCommand) {
                 case 1:
                     say("Enter a key to search to");
-                    showWord(askCommand("->"));
+                    showWord(ask(console, scanner));
                     showDictionaryEditMenu();
                     break;
 
@@ -219,7 +244,7 @@ public class ConsoleUi implements Ui {
 
                 case 3:
                     say("Enter your dictionary entry using format: key-value1/value2/...");
-                    addWord(askCommand("->"));
+                    addWord(ask(console, scanner));
                     showDictionaryEditMenu();
                     break;
             }

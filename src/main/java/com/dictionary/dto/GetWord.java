@@ -12,4 +12,11 @@ public class GetWord {
     public List<String> getValues() {
         return values;
     }
+//TODO перенести в UI
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        values.forEach(value -> s.append(value).append(" "));
+        return s.toString();
+    }
 }
