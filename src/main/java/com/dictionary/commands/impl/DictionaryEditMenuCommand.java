@@ -50,6 +50,12 @@ public class DictionaryEditMenuCommand implements Command {
             case "4":
                 say("Enter a Key to delete an entry");
                 deleteWord(ask(console, scanner));
+                setUIState(uiState);
+                break;
+            case "5":
+                uiState = UIState.MAIN_MENU;
+                setUIState(uiState);
+                break;
         }
 
     }
