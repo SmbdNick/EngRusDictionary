@@ -19,7 +19,6 @@ public class DictionaryEditMenuCommand implements Command {
     public void execute(Console console, Scanner scanner) {
         setUIState(UIState.DICTIONARY_EDIT_MENU);
 
-
         consoleInteractions.say(currentDictionaryKey + " dictionary selected\n" +
                 "Select what you want to do\n" +
                 "1. Show entry by key\n" +
@@ -30,28 +29,35 @@ public class DictionaryEditMenuCommand implements Command {
 
         switch (consoleInteractions.ask(console, scanner)) {
             case "1":
-                consoleInteractions.say("Enter a key to search to");
-                showWord(consoleInteractions.ask(console, scanner));
+                showEntryByKey(console, scanner);
                 break;
-
             case "2":
                 showAllWords();
                 break;
-
             case "3":
-                consoleInteractions.say("Enter your dictionary entry using format: key-value1/value2/...");
-                addWord(consoleInteractions.ask(console, scanner));
+                addEntryToDictionary(console, scanner);
                 break;
-
             case "4":
-                consoleInteractions.say("Enter a Key to delete an entry");
-                deleteWord(consoleInteractions.ask(console, scanner));
+                removeEntryFromDictionary(console, scanner);
                 break;
             case "5":
                 setUIState(UIState.MAIN_MENU);
                 break;
         }
 
+    }
+    private void removeEntryFromDictionary(Console console, Scanner scanner){
+        consoleInteractions.say("Enter a Key to delete an entry");
+        deleteWord(consoleInteractions.ask(console, scanner));
+    }
+    private void addEntryToDictionary(Console console, Scanner scanner){
+        consoleInteractions.say("Enter your dictionary entry using format: key-value1/value2/...");
+        addWord(consoleInteractions.ask(console, scanner));
+    }
+
+    private void showEntryByKey(Console console, Scanner scanner){
+        consoleInteractions.say("Enter a key to search to");
+        showWord(consoleInteractions.ask(console, scanner));
     }
 
     private void showWord(String key) {

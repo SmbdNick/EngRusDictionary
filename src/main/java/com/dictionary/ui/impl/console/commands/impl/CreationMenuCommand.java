@@ -16,11 +16,11 @@ import static com.dictionary.ui.impl.console.ConsoleUi.getDictionaryMap;
 import static com.dictionary.ui.impl.console.ConsoleUi.setDictionaryMap;
 
 public class CreationMenuCommand implements Command {
-
+    Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
     @Override
     public void execute(Console console, Scanner scanner) {
         setUIState(UIState.CREATION_MENU);
-        Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
+
         consoleInteractions.say("Please enter your desired type of Dictionary\n" +
                 "1. Russian - English\n" +
                 "2. English - Russian\n" +
@@ -28,25 +28,11 @@ public class CreationMenuCommand implements Command {
 
         switch (consoleInteractions.ask(console, scanner)) {
             case "1":
-                DictionaryService rusEngDictionary = new DictionaryService(new InMemoryDictionary(), new RusValidator(), new EngValidator());
-                if (!(dictionaryServiceMap.containsKey("Rus-Eng"))) {
-                    dictionaryServiceMap.put("Rus-Eng", rusEngDictionary);
-                    setDictionaryMap(dictionaryServiceMap);
-                } else {
-                    consoleInteractions.say("This dictionary already exists, please choose different option");
-                }
+                createRusEngDictionary();
                 break;
 
-
             case "2":
-                DictionaryService engRusDictionary = new DictionaryService(new InMemoryDictionary(), new EngValidator(), new RusValidator());
-
-                if (!(dictionaryServiceMap.containsKey("Eng-Rus"))) {
-                    dictionaryServiceMap.put("Eng-Rus", engRusDictionary);
-                    setDictionaryMap(dictionaryServiceMap);
-                } else {
-                    consoleInteractions.say("This dictionary already exists, please choose different option");
-                }
+                createEngRusDictionary();
                 break;
 
             case "3":
@@ -58,6 +44,27 @@ public class CreationMenuCommand implements Command {
                 break;
         }
 
+    }
+
+    private void createRusEngDictionary(){
+        DictionaryService rusEngDictionary = new DictionaryService(new InMemoryDictionary(), new RusValidator(), new EngValidator());
+        if (!(dictionaryServiceMap.containsKey("Rus-Eng"))) {
+            dictionaryServiceMap.put("Rus-Eng", rusEngDictionary);
+            setDictionaryMap(dictionaryServiceMap);
+        } else {
+            consoleInteractions.say("This dictionary already exists, please choose different option");
+        }
+    }
+
+    private void createEngRusDictionary(){
+        DictionaryService engRusDictionary = new DictionaryService(new InMemoryDictionary(), new EngValidator(), new RusValidator());
+
+        if (!(dictionaryServiceMap.containsKey("Eng-Rus"))) {
+            dictionaryServiceMap.put("Eng-Rus", engRusDictionary);
+            setDictionaryMap(dictionaryServiceMap);
+        } else {
+            consoleInteractions.say("This dictionary already exists, please choose different option");
+        }
     }
 
 }

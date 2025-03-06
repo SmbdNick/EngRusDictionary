@@ -31,8 +31,6 @@ public class MainMenuCommand implements Command {
             default:
                 consoleInteractions.say("Unknown command, please reenter your command");
                 break;
-
         }
-
     }
 }
