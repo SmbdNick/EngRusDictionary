@@ -25,13 +25,10 @@ public class DictionaryService {
         this.valueValidator = valueValidator;
     }
 
-    // TODO только пример, возможно надо переделать и добавить такие же для всех методов словаря (может и больше)
     public String createWord(String key, List<String> values) {
         keyValidator.validate(key);
 
-        for (String s : values){
-            valueValidator.validate(s);
-        }
+        values.forEach(value -> valueValidator.validate(value));
 
         CreateWord newWord = new CreateWord(key, values);
         dictionary.modify(newWord);
@@ -39,10 +36,10 @@ public class DictionaryService {
         return String.format(SUCCESS_CREATE, "word");
     }
 
-    public Optional<GetWord> getWordByKey(String key){
-
+    public Optional<GetWord> getWordByKey(String key) {
         return dictionary.get(key);
     }
+
     public Set<Word> getAllWordsByKeyList(final List<String> keyList) {
         Set<Word> result = new HashSet<>();
 
@@ -56,16 +53,17 @@ public class DictionaryService {
         return result;
     }
 
-    public Set<Word> getAllWords(){
+    public Set<Word> getAllWords() {
         Set<Word> result = new HashSet<>();
 
-        for (Word word : dictionary.getAllWords()){
-            String key = word.getKey();
-            result.add(new Word(key, word.getValues()));
-        }
+        dictionary.getAllWords().forEach(word -> {
+            result.add(new Word(word.getKey(), word.getValues()));
+        });
+
         return result;
     }
-    public void deleteEntryByKey(String key){
+
+    public void deleteEntryByKey(String key) {
         dictionary.delete(key);
     }
 }

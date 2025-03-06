@@ -8,7 +8,7 @@ public interface Validator {
             throw new ValidationException("Word cannot be empty");
         }
         if(!(word.matches(getPattern()))) {
-            throw new ValidationException("Word must contain only Russian letters");
+            throw new ValidationException("Word must contain only corresponding language's letters");
         }
 
     }

@@ -1,4 +1,4 @@
-package com.dictionary.ui.api;
+package com.dictionary.ui.impl.console;
 
 public enum UIState {
     MAIN_MENU,

@@ -1,39 +1,38 @@
-package com.dictionary.commands.impl;
+package com.dictionary.ui.impl.console.commands.impl;
 
-import com.dictionary.commands.api.Command;
 import com.dictionary.service.DictionaryService;
-import com.dictionary.ui.api.UIState;
+import com.dictionary.ui.impl.console.UIState;
+import com.dictionary.ui.impl.console.commands.api.Command;
 
 import java.io.Console;
 import java.util.*;
 
-import static com.dictionary.commands.Ask.ask;
-import static com.dictionary.commands.Say.say;
-import static com.dictionary.ui.impl.ConsoleUi.*;
+import static com.dictionary.ui.impl.console.ConsoleUIRunner.setUIState;
+import static com.dictionary.ui.impl.console.ConsoleUi.*;
 
 public class DictionaryMenuCommand implements Command {
     @Override
-    public void doCommand(UIState uiState, Console console, Scanner scanner) {
+    public void execute(UIState uiState, Console console, Scanner scanner) {
         uiState = UIState.DICTIONARY_MENU;
         Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
         String currentDictionaryKey = getCurrentDictionaryKey();
         int i = 1;
 
-        say("Your created dictionaries:");
+        consoleInteractions.say("Your created dictionaries:");
         for (String key : dictionaryServiceMap.keySet()) {
-            say(i + key + " Dictionary");
+            consoleInteractions.say(i + key + " Dictionary");
             i++;
         }
-        say(i + " Go back");
-        say("Select a dictionary to work with");
+        consoleInteractions.say(i + " Go back");
+        consoleInteractions.say("Select a dictionary to work with");
 
-        int intCommand = Integer.parseInt((ask(console, scanner)));
+        int intCommand = Integer.parseInt((consoleInteractions.ask(console, scanner)));
 
         Set<String> set = dictionaryServiceMap.keySet();
         List<String> list = new ArrayList<>(set);
 
         if (list == null || list.isEmpty()) {
-            say("Your dictionary map is empty, backing to main menu");
+            consoleInteractions.say("Your dictionary map is empty, backing to main menu");
             uiState = UIState.MAIN_MENU;
             setUIState(uiState);
         } else {
@@ -43,7 +42,7 @@ public class DictionaryMenuCommand implements Command {
             }
 
             if (intCommand - 1 > list.size()) {
-                say("Unknown command, please reenter your command");
+                consoleInteractions.say("Unknown command, please reenter your command");
                 uiState = UIState.DICTIONARY_MENU;
                 setUIState(uiState);
             } else {

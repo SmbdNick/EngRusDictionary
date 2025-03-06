@@ -1,27 +1,26 @@
-package com.dictionary.commands.impl;
+package com.dictionary.ui.impl.console.commands.impl;
 
-import com.dictionary.commands.api.Command;
 import com.dictionary.dto.GetWord;
 import com.dictionary.model.Word;
 import com.dictionary.service.DictionaryService;
-import com.dictionary.ui.api.UIState;
+import com.dictionary.ui.impl.console.UIState;
+import com.dictionary.ui.impl.console.commands.api.Command;
 
 import java.io.Console;
 import java.util.*;
 
-import static com.dictionary.commands.Ask.ask;
-import static com.dictionary.commands.Say.say;
-import static com.dictionary.ui.impl.ConsoleUi.*;
+import static com.dictionary.ui.impl.console.ConsoleUIRunner.setUIState;
+import static com.dictionary.ui.impl.console.ConsoleUi.*;
 
 public class DictionaryEditMenuCommand implements Command {
     String currentDictionaryKey = getCurrentDictionaryKey();
     Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
     @Override
-    public void doCommand(UIState uiState, Console console, Scanner scanner) {
+    public void execute(UIState uiState, Console console, Scanner scanner) {
         uiState = UIState.DICTIONARY_EDIT_MENU;
 
 
-        say(currentDictionaryKey + " dictionary selected\n" +
+        consoleInteractions.say(currentDictionaryKey + " dictionary selected\n" +
                 "Select what you want to do\n" +
                 "1. Show entry by key\n" +
                 "2. Show all entries\n" +
@@ -29,10 +28,10 @@ public class DictionaryEditMenuCommand implements Command {
                 "4. Remove entry from dictionary\n" +
                 "5. Back to Main Menu");
 
-        switch (ask(console, scanner)) {
+        switch (consoleInteractions.ask(console, scanner)) {
             case "1":
-                say("Enter a key to search to");
-                showWord(ask(console, scanner));
+                consoleInteractions.say("Enter a key to search to");
+                showWord(consoleInteractions.ask(console, scanner));
                 setUIState(uiState);
                 break;
 
@@ -42,14 +41,14 @@ public class DictionaryEditMenuCommand implements Command {
                 break;
 
             case "3":
-                say("Enter your dictionary entry using format: key-value1/value2/...");
-                addWord(ask(console, scanner));
+                consoleInteractions.say("Enter your dictionary entry using format: key-value1/value2/...");
+                addWord(consoleInteractions.ask(console, scanner));
                 setUIState(uiState);
                 break;
 
             case "4":
-                say("Enter a Key to delete an entry");
-                deleteWord(ask(console, scanner));
+                consoleInteractions.say("Enter a Key to delete an entry");
+                deleteWord(consoleInteractions.ask(console, scanner));
                 setUIState(uiState);
                 break;
             case "5":
@@ -63,22 +62,21 @@ public class DictionaryEditMenuCommand implements Command {
     private void showWord(String key) {
         Optional<GetWord> word = dictionaryServiceMap.get(currentDictionaryKey)
                 .getWordByKey(key);
-        word.ifPresent(w -> say(key + " " + w.toString()));
+        word.ifPresent(w -> consoleInteractions.say(key + " " + w.toString()));
         if (word.isEmpty()) {
-            say("Word not found");
+            consoleInteractions.say("Word not found");
         }
     }
     private void showAllWords() {
         List<Word> wordList = new ArrayList<>(dictionaryServiceMap.get(currentDictionaryKey).getAllWords());
         for (Word word: wordList){
-            say(word.getKey() + " " + word.getValues());
+            consoleInteractions.say(word.getKey() + " " + word.getValues());
         }
     }
-    public void addWord(String entry) {
+    private void addWord(String entry) {
         String key;
         String[] keyPlusValue = entry.split("-");
         key = keyPlusValue[0];
-        say(key);
 
         List<String> values = List.of(keyPlusValue[1].split("/"));
         dictionaryServiceMap.get(currentDictionaryKey).createWord(key, values);
