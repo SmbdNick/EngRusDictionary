@@ -18,8 +18,8 @@ import static com.dictionary.ui.impl.console.ConsoleUi.setDictionaryMap;
 public class CreationMenuCommand implements Command {
 
     @Override
-    public void execute(UIState uiState, Console console, Scanner scanner) {
-        uiState = UIState.CREATION_MENU;
+    public void execute(Console console, Scanner scanner) {
+        setUIState(UIState.CREATION_MENU);
         Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
         consoleInteractions.say("Please enter your desired type of Dictionary\n" +
                 "1. Russian - English\n" +
@@ -35,7 +35,6 @@ public class CreationMenuCommand implements Command {
                 } else {
                     consoleInteractions.say("This dictionary already exists, please choose different option");
                 }
-                setUIState(uiState);
                 break;
 
 
@@ -48,17 +47,14 @@ public class CreationMenuCommand implements Command {
                 } else {
                     consoleInteractions.say("This dictionary already exists, please choose different option");
                 }
-                setUIState(uiState);
                 break;
 
             case "3":
-                uiState = UIState.MAIN_MENU;
-                setUIState(uiState);
+                setUIState(UIState.MAIN_MENU);
                 break;
 
             default:
                 consoleInteractions.say("Unknown command, please reenter your command");
-                setUIState(uiState);
                 break;
         }
 

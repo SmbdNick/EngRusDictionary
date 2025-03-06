@@ -8,5 +8,5 @@ import java.util.Scanner;
 
 public interface Command {
     ConsoleInteractions consoleInteractions = new ConsoleInteractions();
-    void execute(UIState uiState, Console console, Scanner scanner);
+    void execute(Console console, Scanner scanner);
 }

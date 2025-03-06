@@ -26,19 +26,19 @@ public class ConsoleUIRunner {
             switch (uIstate) {
                 case MAIN_MENU:
                     commandFactory = new MainMenuFactory();
-                    commandFactory.construct(uIstate, console, scanner);
+                    commandFactory.construct(console, scanner);
                     break;
                 case DICTIONARY_MENU:
                     commandFactory = new DictionaryMenuFactory();
-                    commandFactory.construct(uIstate, console, scanner);
+                    commandFactory.construct(console, scanner);
                     break;
                 case CREATION_MENU:
                     commandFactory = new CreationMenuFactory();
-                    commandFactory.construct(uIstate, console, scanner);
+                    commandFactory.construct(console, scanner);
                     break;
                 case DICTIONARY_EDIT_MENU:
                     commandFactory = new DictionaryEditFactory();
-                    commandFactory.construct(uIstate, console, scanner);
+                    commandFactory.construct(console, scanner);
             }
         }
     }

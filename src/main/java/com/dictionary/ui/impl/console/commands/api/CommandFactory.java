@@ -6,9 +6,9 @@ import java.io.Console;
 import java.util.Scanner;
 
 public abstract class CommandFactory {
-    public void construct(UIState uiState, Console console, Scanner scanner){
+    public void construct(Console console, Scanner scanner){
         Command commandItem = createCommand();
-        commandItem.execute(uiState, console, scanner);
+        commandItem.execute(console, scanner);
     }
 
     public abstract Command createCommand();

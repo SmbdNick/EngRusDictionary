@@ -16,8 +16,8 @@ public class DictionaryEditMenuCommand implements Command {
     String currentDictionaryKey = getCurrentDictionaryKey();
     Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
     @Override
-    public void execute(UIState uiState, Console console, Scanner scanner) {
-        uiState = UIState.DICTIONARY_EDIT_MENU;
+    public void execute(Console console, Scanner scanner) {
+        setUIState(UIState.DICTIONARY_EDIT_MENU);
 
 
         consoleInteractions.say(currentDictionaryKey + " dictionary selected\n" +
@@ -32,28 +32,23 @@ public class DictionaryEditMenuCommand implements Command {
             case "1":
                 consoleInteractions.say("Enter a key to search to");
                 showWord(consoleInteractions.ask(console, scanner));
-                setUIState(uiState);
                 break;
 
             case "2":
                 showAllWords();
-                setUIState(uiState);
                 break;
 
             case "3":
                 consoleInteractions.say("Enter your dictionary entry using format: key-value1/value2/...");
                 addWord(consoleInteractions.ask(console, scanner));
-                setUIState(uiState);
                 break;
 
             case "4":
                 consoleInteractions.say("Enter a Key to delete an entry");
                 deleteWord(consoleInteractions.ask(console, scanner));
-                setUIState(uiState);
                 break;
             case "5":
-                uiState = UIState.MAIN_MENU;
-                setUIState(uiState);
+                setUIState(UIState.MAIN_MENU);
                 break;
         }
 

@@ -10,10 +10,9 @@ import static com.dictionary.ui.impl.console.ConsoleUIRunner.setUIState;
 
 public class MainMenuCommand implements Command {
     @Override
-    public void execute(UIState uiState, Console console, Scanner scanner) {
-        CreationMenuCommand creationMenuCommand = new CreationMenuCommand();
+    public void execute(Console console, Scanner scanner) {
 
-        uiState = UIState.MAIN_MENU;
+        setUIState(UIState.MAIN_MENU);
         consoleInteractions.say("Welcome to Dictionary Creator 3000\n" +
                 "Please input your command\n" +
                 "1. Create Dictionary\n" +
@@ -22,18 +21,15 @@ public class MainMenuCommand implements Command {
 
         switch (consoleInteractions.ask(console, scanner)) {
             case "1":
-                uiState = UIState.CREATION_MENU;
-                setUIState(uiState);
+                setUIState(UIState.CREATION_MENU);
                 break;
 
             case "2":
-                uiState = UIState.DICTIONARY_MENU;
-                setUIState(uiState);
+                setUIState(UIState.DICTIONARY_MENU);
                 break;
 
             default:
                 consoleInteractions.say("Unknown command, please reenter your command");
-                setUIState(uiState);
                 break;
 
         }

@@ -12,8 +12,8 @@ import static com.dictionary.ui.impl.console.ConsoleUi.*;
 
 public class DictionaryMenuCommand implements Command {
     @Override
-    public void execute(UIState uiState, Console console, Scanner scanner) {
-        uiState = UIState.DICTIONARY_MENU;
+    public void execute(Console console, Scanner scanner) {
+        setUIState(UIState.DICTIONARY_MENU);
         Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
         String currentDictionaryKey = getCurrentDictionaryKey();
         int i = 1;
@@ -33,25 +33,19 @@ public class DictionaryMenuCommand implements Command {
 
         if (list == null || list.isEmpty()) {
             consoleInteractions.say("Your dictionary map is empty, backing to main menu");
-            uiState = UIState.MAIN_MENU;
-            setUIState(uiState);
+            setUIState(UIState.MAIN_MENU);
         } else {
             if (intCommand - 1 == list.size()) {
-                uiState = UIState.MAIN_MENU;
-                setUIState(uiState);
+                setUIState(UIState.MAIN_MENU);
             }
 
             if (intCommand - 1 > list.size()) {
                 consoleInteractions.say("Unknown command, please reenter your command");
-                uiState = UIState.DICTIONARY_MENU;
-                setUIState(uiState);
+                setUIState(UIState.DICTIONARY_MENU);
             } else {
                 currentDictionaryKey = list.get(intCommand - 1);
                 setCurrentDictionaryKey(currentDictionaryKey);
-
-                uiState = UIState.DICTIONARY_EDIT_MENU;
-                setUIState(uiState);
-
+                setUIState(UIState.DICTIONARY_EDIT_MENU);
             }
         }
     }
