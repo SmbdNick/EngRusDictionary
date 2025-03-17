@@ -4,6 +4,7 @@ import com.dictionary.dto.GetWord;
 import com.dictionary.model.Word;
 import com.dictionary.service.DictionaryService;
 import com.dictionary.ui.impl.console.UIState;
+import com.dictionary.ui.impl.console.commands.MenuInteractionState;
 import com.dictionary.ui.impl.console.commands.api.Command;
 
 import java.io.Console;
@@ -15,9 +16,11 @@ import static com.dictionary.ui.impl.console.ConsoleUi.*;
 public class DictionaryEditMenuCommand implements Command {
     String currentDictionaryKey = getCurrentDictionaryKey();
     Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
+    MenuInteractionState menuInteractionState;
     @Override
     public void execute(Console console, Scanner scanner) {
         setUIState(UIState.DICTIONARY_EDIT_MENU);
+
 
         consoleInteractions.say(currentDictionaryKey + " dictionary selected\n" +
                 "Select what you want to do\n" +
@@ -27,20 +30,28 @@ public class DictionaryEditMenuCommand implements Command {
                 "4. Remove entry from dictionary\n" +
                 "5. Back to Main Menu");
 
-        switch (consoleInteractions.ask(console, scanner)) {
-            case "1":
+        String com = consoleInteractions.ask(console, scanner);
+        for (MenuInteractionState menuInteractionState : MenuInteractionState.values()) {
+            if (menuInteractionState.getFirst().equals(com) || menuInteractionState.getSecond().equals(com)) {
+                this.menuInteractionState = menuInteractionState;
+                break;
+            }
+        }
+
+        switch (menuInteractionState) {
+            case FIRST_OPTION:
                 showEntryByKey(console, scanner);
                 break;
-            case "2":
+            case SECOND_OPTION:
                 showAllWords();
                 break;
-            case "3":
+            case THIRD_OPTION:
                 addEntryToDictionary(console, scanner);
                 break;
-            case "4":
+            case FOURTH_OPTION:
                 removeEntryFromDictionary(console, scanner);
                 break;
-            case "5":
+            case FIFTH_OPTION:
                 setUIState(UIState.MAIN_MENU);
                 break;
         }

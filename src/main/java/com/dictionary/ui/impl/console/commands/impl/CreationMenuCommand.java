@@ -5,6 +5,7 @@ import com.dictionary.service.DictionaryService;
 import com.dictionary.service.validator.impl.EngValidator;
 import com.dictionary.service.validator.impl.RusValidator;
 import com.dictionary.ui.impl.console.UIState;
+import com.dictionary.ui.impl.console.commands.MenuInteractionState;
 import com.dictionary.ui.impl.console.commands.api.Command;
 
 import java.io.Console;
@@ -16,7 +17,9 @@ import static com.dictionary.ui.impl.console.ConsoleUi.getDictionaryMap;
 import static com.dictionary.ui.impl.console.ConsoleUi.setDictionaryMap;
 
 public class CreationMenuCommand implements Command {
+    MenuInteractionState menuInteractionState;
     Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
+
     @Override
     public void execute(Console console, Scanner scanner) {
         setUIState(UIState.CREATION_MENU);
@@ -26,16 +29,24 @@ public class CreationMenuCommand implements Command {
                 "2. English - Russian\n" +
                 "3.Back to Main Menu");
 
-        switch (consoleInteractions.ask(console, scanner)) {
-            case "1":
+        String com = consoleInteractions.ask(console, scanner);
+        for (MenuInteractionState menuInteractionState : MenuInteractionState.values()) {
+            if (menuInteractionState.getFirst().equals(com) || menuInteractionState.getSecond().equals(com)) {
+                this.menuInteractionState = menuInteractionState;
+                break;
+            }
+        }
+
+        switch (menuInteractionState) {
+            case FIRST_OPTION:
                 createRusEngDictionary();
                 break;
 
-            case "2":
+            case SECOND_OPTION:
                 createEngRusDictionary();
                 break;
 
-            case "3":
+            case THIRD_OPTION:
                 setUIState(UIState.MAIN_MENU);
                 break;
 
@@ -46,7 +57,7 @@ public class CreationMenuCommand implements Command {
 
     }
 
-    private void createRusEngDictionary(){
+    private void createRusEngDictionary() {
         DictionaryService rusEngDictionary = new DictionaryService(new InMemoryDictionary(), new RusValidator(), new EngValidator());
         if (!(dictionaryServiceMap.containsKey("Rus-Eng"))) {
             dictionaryServiceMap.put("Rus-Eng", rusEngDictionary);
@@ -56,7 +67,7 @@ public class CreationMenuCommand implements Command {
         }
     }
 
-    private void createEngRusDictionary(){
+    private void createEngRusDictionary() {
         DictionaryService engRusDictionary = new DictionaryService(new InMemoryDictionary(), new EngValidator(), new RusValidator());
 
         if (!(dictionaryServiceMap.containsKey("Eng-Rus"))) {

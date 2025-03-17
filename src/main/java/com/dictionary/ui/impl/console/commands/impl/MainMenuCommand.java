@@ -1,6 +1,7 @@
 package com.dictionary.ui.impl.console.commands.impl;
 
 import com.dictionary.ui.impl.console.UIState;
+import com.dictionary.ui.impl.console.commands.MenuInteractionState;
 import com.dictionary.ui.impl.console.commands.api.Command;
 
 import java.io.Console;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 import static com.dictionary.ui.impl.console.ConsoleUIRunner.setUIState;
 
 public class MainMenuCommand implements Command {
+    MenuInteractionState menuInteractionState;
     @Override
     public void execute(Console console, Scanner scanner) {
 
@@ -18,13 +20,20 @@ public class MainMenuCommand implements Command {
                 "1. Create Dictionary\n" +
                 "2. Existing Dictionary Menu\n");
 
+        String com = consoleInteractions.ask(console, scanner);
+        for (MenuInteractionState menuInteractionState : MenuInteractionState.values()) {
+            if (menuInteractionState.getFirst().equals(com) || menuInteractionState.getSecond().equals(com)) {
+                this.menuInteractionState = menuInteractionState;
+                break;
+            }
+        }
 
-        switch (consoleInteractions.ask(console, scanner)) {
-            case "1":
+        switch (menuInteractionState) {
+            case FIRST_OPTION:
                 setUIState(UIState.CREATION_MENU);
                 break;
 
-            case "2":
+            case SECOND_OPTION:
                 setUIState(UIState.DICTIONARY_MENU);
                 break;
 
