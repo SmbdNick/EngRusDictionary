@@ -1,10 +1,6 @@
 package com.dictionary.ui.impl.console;
 
-import com.dictionary.ui.impl.console.commands.api.CommandFactory;
-import com.dictionary.ui.impl.console.commands.factory.CreationMenuFactory;
-import com.dictionary.ui.impl.console.commands.factory.DictionaryEditFactory;
-import com.dictionary.ui.impl.console.commands.factory.DictionaryMenuFactory;
-import com.dictionary.ui.impl.console.commands.factory.MainMenuFactory;
+import com.dictionary.ui.impl.console.commands.impl.CommandFactory;
 
 import java.io.Console;
 import java.util.Scanner;
@@ -20,26 +16,10 @@ public class ConsoleUIRunner {
         ConsoleUIRunner.uIstate = uIstate;
     }
     public void run() {
-        CommandFactory commandFactory;
+        CommandFactory commandFactory = new CommandFactory();
 
         while (true) {
-            switch (uIstate) {
-                case MAIN_MENU:
-                    commandFactory = new MainMenuFactory();
-                    commandFactory.construct(console, scanner);
-                    break;
-                case DICTIONARY_MENU:
-                    commandFactory = new DictionaryMenuFactory();
-                    commandFactory.construct(console, scanner);
-                    break;
-                case CREATION_MENU:
-                    commandFactory = new CreationMenuFactory();
-                    commandFactory.construct(console, scanner);
-                    break;
-                case DICTIONARY_EDIT_MENU:
-                    commandFactory = new DictionaryEditFactory();
-                    commandFactory.construct(console, scanner);
-            }
+            commandFactory.createCommand(uIstate);
         }
     }
 

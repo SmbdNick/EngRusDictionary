@@ -18,7 +18,7 @@ public class InMemoryDictionary implements Dictionary {
         get(editWord.getKey()).
                 ifPresent(word -> values.addAll(word.getValues()));
 
-        delete(editWord.getKey());
+        deleteWord(editWord.getKey());
         add(new CreateWord(editWord.getKey(), values));
     }
 
@@ -39,7 +39,7 @@ public class InMemoryDictionary implements Dictionary {
     }
 
     @Override
-    public void delete(final String word) {
+    public void deleteWord(final String word) {
         if (isWordExist(word)) {
             dictionary.remove(getWordByIndex(getIndexByWord(word)));
         }

@@ -1,5 +1,6 @@
 package com.dictionary.ui.impl.console.commands.impl;
 
+import com.dictionary.dao.impl.FileDictionary;
 import com.dictionary.dao.impl.InMemoryDictionary;
 import com.dictionary.service.DictionaryService;
 import com.dictionary.service.validator.impl.EngValidator;
@@ -58,7 +59,7 @@ public class CreationMenuCommand implements Command {
     }
 
     private void createRusEngDictionary() {
-        DictionaryService rusEngDictionary = new DictionaryService(new InMemoryDictionary(), new RusValidator(), new EngValidator());
+        DictionaryService rusEngDictionary = new DictionaryService(new FileDictionary("RUS-ENG"), new RusValidator(), new EngValidator());
         if (!(dictionaryServiceMap.containsKey("Rus-Eng"))) {
             dictionaryServiceMap.put("Rus-Eng", rusEngDictionary);
             setDictionaryMap(dictionaryServiceMap);
@@ -68,7 +69,7 @@ public class CreationMenuCommand implements Command {
     }
 
     private void createEngRusDictionary() {
-        DictionaryService engRusDictionary = new DictionaryService(new InMemoryDictionary(), new EngValidator(), new RusValidator());
+        DictionaryService engRusDictionary = new DictionaryService(new FileDictionary("ENG-RUS"), new EngValidator(), new RusValidator());
 
         if (!(dictionaryServiceMap.containsKey("Eng-Rus"))) {
             dictionaryServiceMap.put("Eng-Rus", engRusDictionary);
