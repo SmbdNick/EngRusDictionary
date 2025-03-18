@@ -1,7 +1,6 @@
 package com.dictionary.ui.impl.console.commands.impl;
 
 import com.dictionary.dao.impl.FileDictionary;
-import com.dictionary.dao.impl.InMemoryDictionary;
 import com.dictionary.service.DictionaryService;
 import com.dictionary.service.validator.impl.EngValidator;
 import com.dictionary.service.validator.impl.RusValidator;

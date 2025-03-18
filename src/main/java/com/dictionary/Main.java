@@ -2,7 +2,6 @@ package com.dictionary;
 
 import com.dictionary.ui.impl.console.ConsoleUi;
 
-import java.io.File;
 import java.io.IOException;
 
 class Main {

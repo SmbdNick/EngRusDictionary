@@ -11,6 +11,7 @@ import static com.dictionary.ui.impl.console.ConsoleUIRunner.setUIState;
 
 public class MainMenuCommand implements Command {
     MenuInteractionState menuInteractionState;
+
     @Override
     public void execute(Console console, Scanner scanner) {
 

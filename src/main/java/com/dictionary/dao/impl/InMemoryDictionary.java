@@ -1,7 +1,7 @@
 package com.dictionary.dao.impl;
 
-import com.dictionary.dto.CreateWord;
 import com.dictionary.dao.api.Dictionary;
+import com.dictionary.dto.CreateWord;
 import com.dictionary.dto.GetWord;
 import com.dictionary.model.Word;
 

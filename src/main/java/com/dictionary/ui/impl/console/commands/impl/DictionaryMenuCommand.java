@@ -8,7 +8,8 @@ import java.io.Console;
 import java.util.*;
 
 import static com.dictionary.ui.impl.console.ConsoleUIRunner.setUIState;
-import static com.dictionary.ui.impl.console.ConsoleUi.*;
+import static com.dictionary.ui.impl.console.ConsoleUi.getDictionaryMap;
+import static com.dictionary.ui.impl.console.ConsoleUi.setCurrentDictionaryKey;
 
 public class DictionaryMenuCommand implements Command {
     Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();

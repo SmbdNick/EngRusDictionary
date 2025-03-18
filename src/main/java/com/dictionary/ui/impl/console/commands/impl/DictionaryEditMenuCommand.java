@@ -17,6 +17,7 @@ public class DictionaryEditMenuCommand implements Command {
     String currentDictionaryKey = getCurrentDictionaryKey();
     Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
     MenuInteractionState menuInteractionState;
+
     @Override
     public void execute(Console console, Scanner scanner) {
         setUIState(UIState.DICTIONARY_EDIT_MENU);
@@ -57,16 +58,18 @@ public class DictionaryEditMenuCommand implements Command {
         }
 
     }
-    private void removeEntryFromDictionary(Console console, Scanner scanner){
+
+    private void removeEntryFromDictionary(Console console, Scanner scanner) {
         consoleInteractions.say("Enter a Key to delete an entry");
         deleteWord(consoleInteractions.ask(console, scanner));
     }
-    private void addEntryToDictionary(Console console, Scanner scanner){
+
+    private void addEntryToDictionary(Console console, Scanner scanner) {
         consoleInteractions.say("Enter your dictionary entry using format: key-value1/value2/...");
         addWord(consoleInteractions.ask(console, scanner));
     }
 
-    private void showEntryByKey(Console console, Scanner scanner){
+    private void showEntryByKey(Console console, Scanner scanner) {
         consoleInteractions.say("Enter a key to search to");
         showWord(consoleInteractions.ask(console, scanner));
     }
@@ -79,12 +82,14 @@ public class DictionaryEditMenuCommand implements Command {
             consoleInteractions.say("Word not found");
         }
     }
+
     private void showAllWords() {
         List<Word> wordList = new ArrayList<>(dictionaryServiceMap.get(currentDictionaryKey).getAllWords());
-        for (Word word: wordList){
+        for (Word word : wordList) {
             consoleInteractions.say(word.getKey() + " " + word.getValues());
         }
     }
+
     private void addWord(String entry) {
         String key;
         String[] keyPlusValue = entry.split("-");
@@ -94,6 +99,7 @@ public class DictionaryEditMenuCommand implements Command {
         dictionaryServiceMap.get(currentDictionaryKey).createWord(key, values);
         setDictionaryMap(dictionaryServiceMap);
     }
+
     private void deleteWord(String key) {
         dictionaryServiceMap.get(currentDictionaryKey).deleteEntryByKey(key);
     }
