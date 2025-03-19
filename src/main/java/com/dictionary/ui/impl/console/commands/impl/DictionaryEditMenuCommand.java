@@ -8,10 +8,14 @@ import com.dictionary.ui.impl.console.commands.MenuInteractionState;
 import com.dictionary.ui.impl.console.commands.api.Command;
 
 import java.io.Console;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 
 import static com.dictionary.ui.impl.console.ConsoleUIRunner.setUIState;
-import static com.dictionary.ui.impl.console.ConsoleUi.*;
+import static com.dictionary.ui.impl.console.ConsoleUi.getConsole;
+import static com.dictionary.ui.impl.console.ConsoleUi.getScanner;
 
 public class DictionaryEditMenuCommand implements Command {
 
@@ -40,6 +44,8 @@ public class DictionaryEditMenuCommand implements Command {
             if (menuInteractionState.getFirst().equals(com) || menuInteractionState.getSecond().equals(com)) {
                 this.menuInteractionState = menuInteractionState;
                 break;
+            } else {
+                execute(console, scanner);
             }
         }
 
@@ -70,7 +76,7 @@ public class DictionaryEditMenuCommand implements Command {
     }
 
     private void addEntryToDictionary(Console console, Scanner scanner) {
-        consoleInteractions.say("Enter your dictionary entry using format: key-value1/value2/...");
+        consoleInteractions.say("Enter your dictionary entry using format: key-value1,value2,...");
         addWord(consoleInteractions.ask(console, scanner));
         execute(console, scanner);
     }
@@ -84,7 +90,7 @@ public class DictionaryEditMenuCommand implements Command {
     private void showWord(String key) {
         Optional<GetWord> word = dictionaryService
                 .getWordByKey(key);
-        word.ifPresent(w -> consoleInteractions.say(key + " " + w.toString()));
+        word.ifPresent(w -> consoleInteractions.say(key + " " + w));
         if (word.isEmpty()) {
             consoleInteractions.say("Word not found");
         }
@@ -101,13 +107,22 @@ public class DictionaryEditMenuCommand implements Command {
 
     private void addWord(String entry) {
         String key;
-        String[] keyPlusValue = entry.split("-");
-        key = keyPlusValue[0];
 
-        List<String> values = List.of(keyPlusValue[1].split("/"));
-        dictionaryService.createWord(key, values);
+        try {
+            String[] keyPlusValue = entry.split("-");
+            {
+                key = keyPlusValue[0];
 
-        execute(getConsole(), getScanner());
+                List<String> values = List.of(keyPlusValue[1].split(","));
+                dictionaryService.createWord(key, values);
+
+                execute(getConsole(), getScanner());
+            }
+        } catch (RuntimeException e) {
+            consoleInteractions.say("You got fucked up, bruh! Try again!");
+            execute(getConsole(), getScanner());
+        }
+
     }
 
     private void deleteWord(String key) {

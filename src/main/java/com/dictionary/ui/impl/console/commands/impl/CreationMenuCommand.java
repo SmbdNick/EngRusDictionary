@@ -13,7 +13,6 @@ import static com.dictionary.ui.impl.console.ConsoleUIRunner.setUIState;
 
 public class CreationMenuCommand implements Command {
     MenuInteractionState menuInteractionState;
-    DictionaryService dictionaryService;
 
     @Override
     public void execute(Console console, Scanner scanner) {
@@ -29,6 +28,8 @@ public class CreationMenuCommand implements Command {
             if (menuInteractionState.getFirst().equals(com) || menuInteractionState.getSecond().equals(com)) {
                 this.menuInteractionState = menuInteractionState;
                 break;
+            } else {
+                execute(console, scanner);
             }
         }
 

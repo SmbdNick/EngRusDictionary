@@ -26,6 +26,8 @@ public class MainMenuCommand implements Command {
             if (menuInteractionState.getFirst().equals(com) || menuInteractionState.getSecond().equals(com)) {
                 this.menuInteractionState = menuInteractionState;
                 break;
+            } else {
+                execute(console, scanner);
             }
         }
 

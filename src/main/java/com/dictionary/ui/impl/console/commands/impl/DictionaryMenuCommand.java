@@ -15,7 +15,6 @@ import java.util.Scanner;
 import static com.dictionary.ui.impl.console.ConsoleUIRunner.setUIState;
 
 public class DictionaryMenuCommand implements Command {
-    DictionaryService dictionaryService;
     MenuInteractionState menuInteractionState;
 
     @Override
@@ -27,6 +26,8 @@ public class DictionaryMenuCommand implements Command {
             if (menuInteractionState.getFirst().equals(com) || menuInteractionState.getSecond().equals(com)) {
                 this.menuInteractionState = menuInteractionState;
                 break;
+            } else {
+                execute(console, scanner);
             }
         }
 
@@ -46,7 +47,7 @@ public class DictionaryMenuCommand implements Command {
     }
 
     private void dictionaryMenuInteractions(MenuInteractionState menuInteractionState) {
-        switch (menuInteractionState){
+        switch (menuInteractionState) {
             case FIRST_OPTION:
                 new DictionaryEditMenuCommand(new DictionaryService
                         (new FileDictionary("RUS-ENG"), new RusValidator(), new EngValidator()))
@@ -64,7 +65,5 @@ public class DictionaryMenuCommand implements Command {
                 consoleInteractions.say("Unknown command");
                 break;
         }
-
-
     }
 }

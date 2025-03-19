@@ -16,10 +16,6 @@ public class FileDictionary implements Dictionary {
     private String name;
     ConsoleInteractions consoleInteractions = new ConsoleInteractions();
 
-    public static String getFileDir() {
-        return fileDir;
-    }
-
     public FileDictionary(String name) {
         this.name = name;
         StringBuilder pathBuilder = new StringBuilder(this.getClass()
@@ -47,10 +43,6 @@ public class FileDictionary implements Dictionary {
         } else {
             consoleInteractions.say("This dictionary exists! Edit it!");
         }
-    }
-
-    public void deleteFile() {
-        dictionaryFile.delete();
     }
 
     @Override
@@ -153,22 +145,6 @@ public class FileDictionary implements Dictionary {
         return result;
     }
 
-    private void fileWriter(String addedWord, Boolean rewriteFile) {
-        FileWriter fileWriter;
-
-        try {
-            fileWriter = new FileWriter(dictionaryFile, !rewriteFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            fileWriter.write(addedWord);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private void addWord(CreateWord word) {
         String addedWord = word.getKey() + "-" + String.join(",", word.getValues()) + "\n";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(dictionaryFile, true))) {
@@ -187,13 +163,5 @@ public class FileDictionary implements Dictionary {
             }
         }
         return false;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

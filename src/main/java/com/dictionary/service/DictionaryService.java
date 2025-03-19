@@ -1,13 +1,11 @@
 package com.dictionary.service;
 
 import com.dictionary.dao.api.Dictionary;
-import com.dictionary.dao.impl.FileDictionary;
 import com.dictionary.dto.CreateWord;
 import com.dictionary.dto.GetWord;
 import com.dictionary.model.Word;
 import com.dictionary.service.validator.api.Validator;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
