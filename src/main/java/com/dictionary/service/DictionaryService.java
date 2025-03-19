@@ -1,11 +1,14 @@
 package com.dictionary.service;
 
 import com.dictionary.dao.api.Dictionary;
+import com.dictionary.dao.impl.FileDictionary;
 import com.dictionary.dto.CreateWord;
 import com.dictionary.dto.GetWord;
 import com.dictionary.model.Word;
 import com.dictionary.service.validator.api.Validator;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +18,6 @@ public class DictionaryService {
     private final Dictionary dictionary;
     private final Validator keyValidator;
     private final Validator valueValidator;
-
-
     private static final String SUCCESS_CREATE = "%s created successfully";
 
     public DictionaryService(Dictionary dictionary, Validator keyValidator, Validator valueValidator) {
@@ -64,6 +65,11 @@ public class DictionaryService {
     }
 
     public void deleteEntryByKey(String key) {
-        dictionary.delete(key);
+        try {
+            dictionary.deleteWord(key);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
 }

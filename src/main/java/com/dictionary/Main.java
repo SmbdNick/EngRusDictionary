@@ -6,8 +6,6 @@ import java.io.IOException;
 
 class Main {
     public static void main(String[] args) throws IOException {
-//        File file = new File("B://Study//EngRusDictionary//src//resources//"+"text.txt");
-//        file.createNewFile();
         ConsoleUi consoleUi = new ConsoleUi();
         consoleUi.start();
     }

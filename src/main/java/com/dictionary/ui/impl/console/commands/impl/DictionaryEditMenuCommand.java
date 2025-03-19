@@ -14,16 +14,20 @@ import static com.dictionary.ui.impl.console.ConsoleUIRunner.setUIState;
 import static com.dictionary.ui.impl.console.ConsoleUi.*;
 
 public class DictionaryEditMenuCommand implements Command {
-    String currentDictionaryKey = getCurrentDictionaryKey();
-    Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
+
     MenuInteractionState menuInteractionState;
+    DictionaryService dictionaryService;
+
+    public DictionaryEditMenuCommand(DictionaryService dictionaryService) {
+        this.dictionaryService = dictionaryService;
+    }
 
     @Override
     public void execute(Console console, Scanner scanner) {
         setUIState(UIState.DICTIONARY_EDIT_MENU);
 
 
-        consoleInteractions.say(currentDictionaryKey + " dictionary selected\n" +
+        consoleInteractions.say("Dictionary selected\n" +
                 "Select what you want to do\n" +
                 "1. Show entry by key\n" +
                 "2. Show all entries\n" +
@@ -62,32 +66,37 @@ public class DictionaryEditMenuCommand implements Command {
     private void removeEntryFromDictionary(Console console, Scanner scanner) {
         consoleInteractions.say("Enter a Key to delete an entry");
         deleteWord(consoleInteractions.ask(console, scanner));
+        execute(console, scanner);
     }
 
     private void addEntryToDictionary(Console console, Scanner scanner) {
         consoleInteractions.say("Enter your dictionary entry using format: key-value1/value2/...");
         addWord(consoleInteractions.ask(console, scanner));
+        execute(console, scanner);
     }
 
     private void showEntryByKey(Console console, Scanner scanner) {
         consoleInteractions.say("Enter a key to search to");
         showWord(consoleInteractions.ask(console, scanner));
+        execute(console, scanner);
     }
 
     private void showWord(String key) {
-        Optional<GetWord> word = dictionaryServiceMap.get(currentDictionaryKey)
+        Optional<GetWord> word = dictionaryService
                 .getWordByKey(key);
         word.ifPresent(w -> consoleInteractions.say(key + " " + w.toString()));
         if (word.isEmpty()) {
             consoleInteractions.say("Word not found");
         }
+        execute(getConsole(), getScanner());
     }
 
     private void showAllWords() {
-        List<Word> wordList = new ArrayList<>(dictionaryServiceMap.get(currentDictionaryKey).getAllWords());
+        List<Word> wordList = new ArrayList<>(dictionaryService.getAllWords());
         for (Word word : wordList) {
             consoleInteractions.say(word.getKey() + " " + word.getValues());
         }
+        execute(getConsole(), getScanner());
     }
 
     private void addWord(String entry) {
@@ -96,11 +105,14 @@ public class DictionaryEditMenuCommand implements Command {
         key = keyPlusValue[0];
 
         List<String> values = List.of(keyPlusValue[1].split("/"));
-        dictionaryServiceMap.get(currentDictionaryKey).createWord(key, values);
-        setDictionaryMap(dictionaryServiceMap);
+        dictionaryService.createWord(key, values);
+
+        execute(getConsole(), getScanner());
     }
 
     private void deleteWord(String key) {
-        dictionaryServiceMap.get(currentDictionaryKey).deleteEntryByKey(key);
+        dictionaryService.deleteEntryByKey(key);
+
+        execute(getConsole(), getScanner());
     }
 }

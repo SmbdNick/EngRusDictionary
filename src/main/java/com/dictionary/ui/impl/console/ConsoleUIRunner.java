@@ -1,5 +1,6 @@
 package com.dictionary.ui.impl.console;
 
+import com.dictionary.ui.impl.console.commands.api.Command;
 import com.dictionary.ui.impl.console.commands.impl.CommandFactory;
 
 import java.io.Console;
@@ -20,9 +21,11 @@ public class ConsoleUIRunner {
 
     public void run() {
         CommandFactory commandFactory = new CommandFactory();
+        Command command;
 
         while (true) {
-            commandFactory.createCommand(uIstate);
+             command = commandFactory.createCommand(uIstate);
+             command.execute(console, scanner);
         }
     }
 

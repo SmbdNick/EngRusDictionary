@@ -10,35 +10,35 @@ import java.util.Scanner;
 
 public class ConsoleUi implements Ui {
 
-    private static Map<String, DictionaryService> dictionaryMap = new HashMap();
+//    private static Map<String, DictionaryService> dictionaryMap = new HashMap();
+//
+//    public static Map<String, DictionaryService> getDictionaryMap() {
+//        return dictionaryMap;
+//    }
+//
+//    public static void setDictionaryMap(Map<String, DictionaryService> dictionaryMap) {
+//        ConsoleUi.dictionaryMap = dictionaryMap;
+//    }
+//
+//    private static String currentDictionaryKey;
+//
+//    public static String getCurrentDictionaryKey() {
+//        return currentDictionaryKey;
+//    }
+//
+//    public static void setCurrentDictionaryKey(String currentDictionaryKey) {
+//        ConsoleUi.currentDictionaryKey = currentDictionaryKey;
+//    }
 
-    public static Map<String, DictionaryService> getDictionaryMap() {
-        return dictionaryMap;
-    }
+    private static final Scanner scanner = new Scanner(System.in);
 
-    public static void setDictionaryMap(Map<String, DictionaryService> dictionaryMap) {
-        ConsoleUi.dictionaryMap = dictionaryMap;
-    }
-
-    private static String currentDictionaryKey;
-
-    public static String getCurrentDictionaryKey() {
-        return currentDictionaryKey;
-    }
-
-    public static void setCurrentDictionaryKey(String currentDictionaryKey) {
-        ConsoleUi.currentDictionaryKey = currentDictionaryKey;
-    }
-
-    private final Scanner scanner = new Scanner(System.in);
-
-    public Scanner getScanner() {
+    public static Scanner getScanner() {
         return scanner;
     }
 
-    private final Console console = System.console();
+    private static final Console console = System.console();
 
-    public Console getConsole() {
+    public static Console getConsole() {
         return console;
     }
 

@@ -2,23 +2,18 @@ package com.dictionary.ui.impl.console.commands.impl;
 
 import com.dictionary.dao.impl.FileDictionary;
 import com.dictionary.service.DictionaryService;
-import com.dictionary.service.validator.impl.EngValidator;
-import com.dictionary.service.validator.impl.RusValidator;
 import com.dictionary.ui.impl.console.UIState;
 import com.dictionary.ui.impl.console.commands.MenuInteractionState;
 import com.dictionary.ui.impl.console.commands.api.Command;
 
 import java.io.Console;
-import java.util.Map;
 import java.util.Scanner;
 
 import static com.dictionary.ui.impl.console.ConsoleUIRunner.setUIState;
-import static com.dictionary.ui.impl.console.ConsoleUi.getDictionaryMap;
-import static com.dictionary.ui.impl.console.ConsoleUi.setDictionaryMap;
 
 public class CreationMenuCommand implements Command {
     MenuInteractionState menuInteractionState;
-    Map<String, DictionaryService> dictionaryServiceMap = getDictionaryMap();
+    DictionaryService dictionaryService;
 
     @Override
     public void execute(Console console, Scanner scanner) {
@@ -58,24 +53,11 @@ public class CreationMenuCommand implements Command {
     }
 
     private void createRusEngDictionary() {
-        DictionaryService rusEngDictionary = new DictionaryService(new FileDictionary("RUS-ENG"), new RusValidator(), new EngValidator());
-        if (!(dictionaryServiceMap.containsKey("Rus-Eng"))) {
-            dictionaryServiceMap.put("Rus-Eng", rusEngDictionary);
-            setDictionaryMap(dictionaryServiceMap);
-        } else {
-            consoleInteractions.say("This dictionary already exists, please choose different option");
-        }
+        new FileDictionary("RUS-ENG");
     }
 
     private void createEngRusDictionary() {
-        DictionaryService engRusDictionary = new DictionaryService(new FileDictionary("ENG-RUS"), new EngValidator(), new RusValidator());
-
-        if (!(dictionaryServiceMap.containsKey("Eng-Rus"))) {
-            dictionaryServiceMap.put("Eng-Rus", engRusDictionary);
-            setDictionaryMap(dictionaryServiceMap);
-        } else {
-            consoleInteractions.say("This dictionary already exists, please choose different option");
-        }
+        new FileDictionary("ENG-RUS");
     }
 
 }

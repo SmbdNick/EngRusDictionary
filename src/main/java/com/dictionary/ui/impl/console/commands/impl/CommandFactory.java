@@ -12,8 +12,7 @@ public class CommandFactory {
                 return new DictionaryMenuCommand();
             case CREATION_MENU:
                 return new CreationMenuCommand();
-            case DICTIONARY_EDIT_MENU:
-                return new DictionaryEditMenuCommand();
+
             default:
                 throw new RuntimeException();//TODO кастомный эксепшион, обработка
         }
