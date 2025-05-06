@@ -7,4 +7,5 @@ class Main {
         ConsoleUi consoleUi = new ConsoleUi();
         consoleUi.start();
     }
+
 }

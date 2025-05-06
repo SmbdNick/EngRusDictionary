@@ -16,30 +16,36 @@ public class MainMenuCommand implements Command {
     public void execute(Console console, Scanner scanner) {
 
         setUIState(UIState.MAIN_MENU);
-        consoleInteractions.say("Welcome to Dictionary Creator 3000\n" +
-                "Please input your command\n" +
-                "1. Create Dictionary\n" +
-                "2. Existing Dictionary Menu\n");
+        consoleInteractions.say("""
+                Welcome to Dictionary 3000
+                Please input your command
+                1. Modify Words Data
+                2. Modify Dictionaries Data
+                3. Modify Translations Data
+                4. Exit program""");
 
         String com = consoleInteractions.ask(console, scanner);
         for (MenuInteractionState menuInteractionState : MenuInteractionState.values()) {
             if (menuInteractionState.getFirst().equals(com) || menuInteractionState.getSecond().equals(com)) {
                 this.menuInteractionState = menuInteractionState;
                 break;
-            } else {
-                execute(console, scanner);
             }
         }
 
         switch (menuInteractionState) {
             case FIRST_OPTION:
-                setUIState(UIState.CREATION_MENU);
+                setUIState(UIState.WORDS);
                 break;
 
             case SECOND_OPTION:
-                setUIState(UIState.DICTIONARY_MENU);
+                setUIState(UIState.DICTIONARIES);
                 break;
 
+            case THIRD_OPTION:
+                setUIState(UIState.TRANSLATIONS);
+                break;
+            case FOURTH_OPTION:
+                System.exit(0);
             default:
                 consoleInteractions.say("Unknown command, please reenter your command");
                 break;

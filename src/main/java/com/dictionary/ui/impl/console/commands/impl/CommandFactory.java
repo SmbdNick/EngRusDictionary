@@ -13,10 +13,12 @@ public class CommandFactory {
         switch (uiState) {
             case MAIN_MENU:
                 return new MainMenuCommand();
-            case DICTIONARY_MENU:
-                return new DictionaryMenuCommand();
-            case CREATION_MENU:
-                return new CreationMenuCommand();
+            case WORDS:
+                return new WordsCommand();
+            case DICTIONARIES:
+                return new DictionariesCommand();
+            case TRANSLATIONS:
+                return new TranslationsCommand();
 
             default:
                 try {

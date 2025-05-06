@@ -11,10 +11,6 @@ public class ConsoleUIRunner {
     private final Scanner scanner;
     private static UIState uIstate = UIState.MAIN_MENU;
 
-    public static UIState getUIState() {
-        return uIstate;
-    }
-
     public static void setUIState(UIState uIstate) {
         ConsoleUIRunner.uIstate = uIstate;
     }
