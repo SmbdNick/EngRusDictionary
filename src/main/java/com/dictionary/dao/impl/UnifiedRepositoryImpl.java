@@ -1,13 +1,13 @@
 package com.dictionary.dao.impl;
 
-import com.dictionary.dao.api.SqlDictionary;
+import com.dictionary.dao.api.UnifiedRepository;
 import com.dictionary.service.exception.DbSqlException;
 import com.dictionary.ui.impl.console.commands.DbConnectionData;
+import org.postgresql.core.ResultHandler;
 
 import java.sql.*;
 
-public class DbSqlDictionary implements SqlDictionary {
-
+public class UnifiedRepositoryImpl implements UnifiedRepository {
     @Override
     public void insertInto(String table, String columns, String[] values) {
         String sql = "";

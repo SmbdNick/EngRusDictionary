@@ -1,6 +1,6 @@
 package com.dictionary.service;
 
-import com.dictionary.dao.impl.DbSqlDictionary;
+import com.dictionary.dao.impl.UnifiedRepositoryImpl;
 import com.dictionary.service.validator.SupportedLanguages;
 import com.dictionary.service.validator.api.Validator;
 import com.dictionary.service.validator.impl.EngValidator;
@@ -11,34 +11,34 @@ import static com.dictionary.ui.impl.console.commands.api.Command.consoleInterac
 
 public class SqlDictionaryService {
     private Validator validator;
-    private final DbSqlDictionary dbSqlDictionary = new DbSqlDictionary();
+    private final UnifiedRepositoryImpl unifiedRepositoryImpl = new UnifiedRepositoryImpl();
 
     public void insertIntoTable(String table, String columns, String[] values) {
-        dbSqlDictionary.insertInto(table, columns, values);
+        unifiedRepositoryImpl.insertInto(table, columns, values);
     }
 
     public void insertIntoTable(String table, String columns, String values) {
-        dbSqlDictionary.insertInto(table, columns, values);
+        unifiedRepositoryImpl.insertInto(table, columns, values);
     }
 
     public void deleteFromWhere(String table, String column, String value) {
-        dbSqlDictionary.deleteFrom(table, column, value);
+        unifiedRepositoryImpl.deleteFrom(table, column, value);
     }
 
     public void selectColumnsFromWhere(String columns, String table, String column, String value) {
-        dbSqlDictionary.selectColumnsWhere(columns, table, column, value);
+        unifiedRepositoryImpl.selectColumnsWhere(columns, table, column, value);
     }
 
     public void selectAllFrom(String table) {
-        dbSqlDictionary.selectAll(table);
+        unifiedRepositoryImpl.selectAll(table);
     }
 
     public void insertNewTranslation(String word, String translation, String dictionary) {
-        dbSqlDictionary.insertNewTranslation(word, translation, dictionary);
+        unifiedRepositoryImpl.insertNewTranslation(word, translation, dictionary);
     }
 
     public void deleteTranslation(String word, String translation, String dictionary) {
-        dbSqlDictionary.deleteTranslation(word, translation, dictionary);
+        unifiedRepositoryImpl.deleteTranslation(word, translation, dictionary);
     }
 
     public void validate(String language, String word) {
